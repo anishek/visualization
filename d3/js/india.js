@@ -26,13 +26,14 @@ d3.csv('data/india.csv', function(error, data){
 
 	xScale.domain([
 			d3.min(data, function(d){return d.Year;}), 
-			d3.max(data, function(d){return d.Year;})
+			d3.max(data, function(d){return d.Year;}) + 1 
 	]);	
 				
 	var yMax = d3.max(data, function(d) {return d.AverageIncome});
 	var yMin = d3.min(data, function(d) {return d.AverageIncome});
 	
-	yScale.domain([yMin - (yMax - yMin)/d3.svg.axis().ticks() ,yMax]);
+	var markerHeight = (yMax - yMin)/d3.svg.axis().ticks();
+	yScale.domain([yMin - markerHeight ,yMax + markerHeight]);
 
 	var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(12).tickFormat(d3.format("d"));
 	var yAxis = d3.svg.axis().scale(yScale).orient('left');
@@ -56,7 +57,6 @@ d3.csv('data/india.csv', function(error, data){
 				.attr('fill', 'steelblue')
 				.text('Year');
 	drawCanvas.append('text')
-				.attr('text-anchor', 'top')
 				.attr('x', 15)
 				.attr('y', 50)
 				.text('AverageIncome')
