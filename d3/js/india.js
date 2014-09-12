@@ -28,11 +28,11 @@ d3.csv('data/india.csv', function(error, data){
 			d3.min(data, function(d){return d.Year;}), 
 			d3.max(data, function(d){return d.Year;})
 	]);	
-							
-	yScale.domain([
-		d3.min(data, function(d) {return d.AverageIncome}),
-		d3.max(data, function(d) {return d.AverageIncome})
-	]);
+				
+	var yMax = d3.max(data, function(d) {return d.AverageIncome});
+	var yMin = d3.min(data, function(d) {return d.AverageIncome});
+	
+	yScale.domain([yMin - (yMax - yMin)/d3.svg.axis().ticks() ,yMax]);
 
 	var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(12).tickFormat(d3.format("d"));
 	var yAxis = d3.svg.axis().scale(yScale).orient('left');
@@ -49,4 +49,17 @@ d3.csv('data/india.csv', function(error, data){
 	drawCanvas.append('g')
 				.attr('class' ,'y axis')
 				.call(yAxis);
+	drawCanvas.append('text')
+				.attr('text-anchor', 'end')
+				.attr('x', width)
+				.attr('y', height - 6)
+				.attr('fill', 'steelblue')
+				.text('Year');
+	drawCanvas.append('text')
+				.attr('text-anchor', 'top')
+				.attr('x', 15)
+				.attr('y', 50)
+				.text('AverageIncome')
+				.attr('fill', 'steelblue')
+				.attr('transform', 'rotate(-90, 15, 50)');
 });
